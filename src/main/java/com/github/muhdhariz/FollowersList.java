@@ -10,42 +10,41 @@ import java.util.ArrayList;
 
 public class FollowersList extends Thread {
 
-    public static ArrayList<String> foll = new ArrayList<>();
+    static ArrayList<String> follLink = new ArrayList<>(), loginId = new ArrayList<>();
+    private static ArrayList<String> ghLink = new ArrayList<>();
+    private static ArrayList<Document> doc = new ArrayList<>();
+    private static ArrayList<Elements> data = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        new FollowersList().Main();
-    }
 
-    public void Main() throws IOException {
-        String[] ghLink = {"https://github.com/zhamri?tab=followers", "https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxOS0wMi0yMFQxMTo1NDozOCswODowMM4Cfdf_&tab=followers",
-                "https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxOC0wOS0xNFQxMTozNzozMiswODowMM4CPUKe&tab=followers", "https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxNy0wOS0xM1QyMTo1MDoxMCswODowMM4BoGXN&tab=followers"};
+    public void run() {
+        ghLink.add("https://github.com/zhamri?tab=followers");
+        ghLink.add("https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxOS0wMi0yMFQxMTo1NDozOCswODowMM4Cfdf_&tab=followers");
+        ghLink.add("https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxOC0wOS0xNFQxMTozNzozMiswODowMM4CPUKe&tab=followers");
+        ghLink.add("https://github.com/zhamri?after=Y3Vyc29yOnYyOpK5MjAxNy0wOS0xM1QyMTo1MDoxMCswODowMM4BoGXN&tab=followers");
 
-        int d = 0;
-        Document[] doc = new Document[ghLink.length];
-        for (String ghLinkA : ghLink) {
-            doc[d] = Jsoup.connect(ghLinkA).get();
-            d++;
+
+        for (String ghLinkL : ghLink) {
+            try {
+                doc.add(Jsoup.connect(ghLinkL).get());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         int E = 0;
-        int totalF = 0;
-        Elements[] data = new Elements[doc.length];
+        int l = 0;
         for (Document docA : doc) {
-            data[E] = docA.getElementsByClass("d-inline-block no-underline mb-1");
+            data.add(docA.getElementsByClass("d-inline-block no-underline mb-1"));
 
-            for (Element datas : data[E]) {
-                String theLink = datas.attr("href");
-                if (theLink != null) {
-                    totalF++;
-                    foll.add("https://github.com" + theLink);
+            for (Element datas : data.get(E)) {
+                assert loginId != null;
+                loginId.add(datas.attr("href"));
+                if (loginId != null) {
+                    follLink.add("https://github.com" + loginId.get(l));
+                    l++;
                 }
             }
             E++;
-        }
-
-        System.out.println(totalF);
-        for (String follL : foll) {
-            System.out.println(follL);
         }
     }
 }
