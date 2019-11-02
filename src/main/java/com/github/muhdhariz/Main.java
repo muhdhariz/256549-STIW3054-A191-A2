@@ -6,16 +6,19 @@ import java.util.concurrent.Executors;
 
 public class Main {
     static String[][] Output = {};
-
+    private static FollowersList followersList = new FollowersList();
+    private static Excel excel = new Excel();
     public static void main(String[] args) throws IOException {
-        FollowersList.Main();
+        followersList.Main();
+
         Output = new String[FollowersList.follLink.size() + 2][6];
         int countCore = Runtime.getRuntime().availableProcessors();
-        ExecutorService service = Executors.newFixedThreadPool(countCore);
-        Output[0] = new String[]{"No.", "login id", "Number of repositories", "Number of followers", "Number of stars", "Number of following"};
+        final ExecutorService service = Executors.newFixedThreadPool(countCore);
 
+        Output[0] = new String[]{"No.", "login id", "Number of repositories", "Number of followers", "Number of stars", "Number of following"};
         System.out.printf("| %-3s | %-20s | %-22s | %-19s | %-15s | %-19s |%n", Output[0][0], Output[0][1], Output[0][2], Output[0][3], Output[0][4], Output[0][5]);
         System.out.printf("|%5s|%22s|%24s|%21s|%17s|%21s|%n", "-----", "----------------------", "------------------------", "---------------------", "-----------------", "---------------------");
+
         for (int i = FollowersList.follLink.size() - 1, j = 0; i >= 0; i--) {
             Thread t = new FollowerStatistic(i, j++);
             service.execute(t);
@@ -27,6 +30,6 @@ public class Main {
         }
         service.shutdown();
 
-        Excel.main(args);
+        excel.main(args);
     }
 }

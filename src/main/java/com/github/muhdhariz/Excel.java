@@ -5,27 +5,17 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-class ShowOS {
-
-    static File temp;
-
-    public static void main(String[] args) throws IOException {
-        temp = File.createTempFile("Assignment2_", ".xlsx");
-    }
-}
 
 public class Excel {
 
     private static XSSFWorkbook workbook = new XSSFWorkbook();
     private static XSSFSheet sheet1 = workbook.createSheet("Sir Zamri Followers' Statistic");
-
+    private static ShowOS showOS = new ShowOS();
     public static void main(String[] args) throws IOException {
-        ShowOS.main(args);
+        showOS.main(args);
         String FILE_NAME = ShowOS.temp.toString();
         Object[][] data1 = Main.Output;
 
