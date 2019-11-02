@@ -15,41 +15,33 @@ class ShowOS {
     static File temp;
 
     public static void main(String[] args) throws IOException {
-        temp = File.createTempFile("Exercise2_", ".xlsx");
+        temp = File.createTempFile("Assignment2_", ".xlsx");
     }
 }
 
-public class Excel extends Thread {
+public class Excel {
 
-    private static String FILE_NAME;
     private static XSSFWorkbook workbook = new XSSFWorkbook();
-    private static XSSFSheet sheet1 = workbook.createSheet("Students Submit");
-    private static XSSFSheet sheet2 = workbook.createSheet("Students Not Submit");
-    private static XSSFSheet sheet3 = workbook.createSheet("Unknown List");
-    //private static Comparison comp = new Comparison();
-    private static ShowOS showP = new ShowOS();
+    private static XSSFSheet sheet1 = workbook.createSheet("Sir Zamri Followers' Statistic");
 
     public static void main(String[] args) throws IOException {
-        showP.main(args);
-        FILE_NAME = ShowOS.temp.toString();
-        /*comp.main(args);
-        Object[][] data1 = Comparison.studS;
-        Object[][] data2 = Comparison.studNS;
-        Object[][] data3 = Comparison.studU;*/
+        ShowOS.main(args);
+        String FILE_NAME = ShowOS.temp.toString();
+        Object[][] data1 = Main.Output;
 
         int rowNum = 0;
         System.out.println();
         System.out.println("Creating " + ShowOS.temp.getName() + " File");
         System.out.println("Excel Filepath: " + ShowOS.temp.getAbsolutePath());
 
-        /*getRowNum(sheet1, data1, rowNum);
+        getRowNum(sheet1, data1, rowNum);
 
-        getRowNum(sheet2, data2, rowNum);
+        excel(FILE_NAME, workbook);
+    }
 
-        getRowNum(sheet3, data3, rowNum);*/
-
+    private static void excel(String fileName, XSSFWorkbook workbook) {
         try {
-            FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
+            FileOutputStream outputStream = new FileOutputStream(fileName);
             workbook.write(outputStream);
             workbook.close();
         } catch (FileNotFoundException e) {
@@ -60,7 +52,11 @@ public class Excel extends Thread {
         System.out.println("Done");
     }
 
-    static void getRowNum(XSSFSheet sheet, Object[][] data, int rowNum) {
+    private static void getRowNum(XSSFSheet sheet, Object[][] data, int rowNum) {
+        sheet(sheet, data, rowNum);
+    }
+
+    private static void sheet(XSSFSheet sheet, Object[][] data, int rowNum) {
         for (Object[] datatype : data) {
             Row row = sheet.createRow(rowNum++);
             int colNum = 0;

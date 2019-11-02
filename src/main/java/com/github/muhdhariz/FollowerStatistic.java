@@ -8,69 +8,61 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FollowerStatistic {
-    private static ArrayList<Document> doc = new ArrayList<>();
-    private static ArrayList<Elements> data = new ArrayList<>();
-    private static String[][] info = {};
+class FollowerStatistic extends Thread implements Runnable {
     static String[][] follStat = {};
+    private static int E;
 
-    public static void main(String[] args) throws IOException {
-        //FollowersList.main(args);
-        follStat = new String[FollowersList.follLink.size()][6];
-        info = new String[FollowersList.follLink.size()][5];
-        new FollowerStatistic().Main();
+    FollowerStatistic(int i) {
+        E = i;
     }
 
-    public void Main() throws IOException {
-        int d = 0;
-        int E = 0;
-        for (String ghLink : FollowersList.follLink) {
-            doc.add(Jsoup.connect(ghLink).get());
-            data.add(doc.get(d).getElementsByClass("Counter hide-lg hide-md hide-sm"));
+    public void start() {
+        synchronized (this) {
+            follStat = new String[FollowersList.follLink.size()][6];
+            String[][] info = new String[FollowersList.follLink.size()][5];
+
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(FollowersList.follLink.get(E)).timeout(0).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert doc != null;
+            Elements data = doc.getElementsByClass("Counter hide-lg hide-md hide-sm");
 
             int i = 0;
-            for (Element dataS : data.get(E)) {
+            for (Element dataS : data) {
                 info[E][i] = dataS.text();
                 i++;
             }
+
             follStat[E][0] = String.valueOf(E + 1);
 
-            E++;
-            d++;
+            arraylist(FollowersList.loginId, follStat, info);
         }
+    }
 
-        int l = 0;
-        for (String log : FollowersList.loginId) {
-            String[] logS = log.split("/");
+    private static void arraylist(ArrayList<String> loginId, String[][] follStat, String[][] info) {
+
+        String[] logS = loginId.get(E).split("/");
             for (String logSL : logS) {
-                follStat[l][1] = logSL;
+                follStat[E][1] = logSL;
             }
-            l++;
-        }
 
-        for (int i = 0; i < follStat.length; i++) {
-            for (int j = 0; j < follStat[i].length; j++) {
-                for (int k = 0; k < info[i].length; k++) {
+
+        for (int j = 0; j < follStat[E].length; j++) {
+            for (int k = 0; k < info[E].length; k++) {
                     if (k == 0 && j == 2) {
-                        follStat[i][j] = info[i][k];
+                        follStat[E][j] = info[E][k];
                     } else if (k == 3 && j == 3) {
-                        follStat[i][j] = info[i][k];
+                        follStat[E][j] = info[E][k];
                     } else if (k == 2 && j == 4) {
-                        follStat[i][j] = info[i][k];
+                        follStat[E][j] = info[E][k];
                     } else if (k == 4 && j == 5) {
-                        follStat[i][j] = info[i][k];
+                        follStat[E][j] = info[E][k];
                     }
                 }
             }
-        }
-
-        for (String[] strings : follStat) {
-            if (strings[2] != null) {
-                for (String string : strings) {
-                    System.out.print(string + " ");
-                }
-                System.out.println();
-            }
-        }
     }
 }
