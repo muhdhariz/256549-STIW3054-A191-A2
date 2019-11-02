@@ -11,9 +11,11 @@ import java.util.ArrayList;
 class FollowerStatistic extends Thread implements Runnable {
     static String[][] follStat = {};
     private static int E;
+    private static int no;
 
-    FollowerStatistic(int i) {
+    FollowerStatistic(int i, int n) {
         E = i;
+        no = n;
     }
 
     public void start() {
@@ -37,7 +39,7 @@ class FollowerStatistic extends Thread implements Runnable {
                 i++;
             }
 
-            follStat[E][0] = String.valueOf(E + 1);
+            follStat[E][0] = String.valueOf(no + 1);
 
             arraylist(FollowersList.loginId, follStat, info);
         }
