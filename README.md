@@ -13,6 +13,7 @@
 ![alt text](http://githubbers.com/haris/real_time_programming/Asg2/Output3.png)
 
 ## UML Class Diagram
+![alt text](http://githubbers.com/haris/real_time_programming/Asg2/Class%20Diagram1.png)
 
 ## Youtube Presentation
 https://www.youtube.com/watch?v=NV2iKuE-6SQ
