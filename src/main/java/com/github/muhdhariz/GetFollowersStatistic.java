@@ -6,9 +6,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
-class GetFollowersStatistic extends Thread {
-    static String[][] follStat = {};
+class GetFollowersStatistic implements Callable<String[][]> {
     private static int E;
     private static int no;
 
@@ -17,7 +17,8 @@ class GetFollowersStatistic extends Thread {
         no = n;
     }
 
-    public void start() {
+    public String[][] call() {
+        String[][] follStat;
         synchronized (this) {
             follStat = new String[StoreFollowersLink.follLink.size()][6];
             String[][] info = new String[StoreFollowersLink.follLink.size()][5];
@@ -43,5 +44,6 @@ class GetFollowersStatistic extends Thread {
 
             new StoreFollowersStatistic(StoreFollowersLink.loginId, follStat, info, E);
         }
+        return follStat;
     }
 }
